@@ -1,0 +1,23 @@
+.App {
+  text-align: center;
+}
+.container {
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+}
+
+input[type=text], input[type=date], input[type=email], input[type=password], input[type=number], select {
+  -webkit-appearance: none; -moz-appearance: none;
+  display: block;
+  margin: 0;
+  width: 100%; height: 40px;
+  line-height: 40px; font-size: 17px;
+  border: 1px solid #bbb;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
