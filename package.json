@@ -1,4 +1,5 @@
 {
+  "homepage": "http://jimstringer.github.io/jsbudget-fb",
   "name": "firebaseauthtutorial",
   "version": "0.1.0",
   "private": true,
@@ -17,8 +18,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
-    "predeploy": "npm run build",
+    "eject": "react-scripts eject",
     "deploy": "gh-pages -d build"
   },
   "eslintConfig": {

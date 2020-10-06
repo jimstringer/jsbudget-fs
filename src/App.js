@@ -3,7 +3,6 @@ import {Route, Switch, Redirect} from 'react-router-dom'
 import Signup from './component/Signup'
 import Signin from './component/Signin'
 import Home from './component/Home'
-import logo from './logo.svg';
 import './App.css';
 import {firebaseAuth} from './provider/AuthProvider'
 
