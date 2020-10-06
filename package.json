@@ -1,6 +1,6 @@
 {
   "homepage": "http://jimstringer.github.io/jsbudget-fb",
-  "name": "firebaseauthtutorial",
+  "name": "JSBudget-firebase",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
