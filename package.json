@@ -1,6 +1,6 @@
 {
-  "homepage": "http://jimstringer.github.io/jsbudget-fb",
-  "name": "JSBudget-firebase",
+  "homepage": "http://jimstringer.github.io/jsbudget-fs",
+  "name": "JSBudget-firestore",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
