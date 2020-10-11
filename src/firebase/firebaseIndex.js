@@ -13,5 +13,6 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 export const firebaseApp = firebase.initializeApp(firebaseConfig);
+//export const fsTimestamp = firebase.firestore().Timestamp
 //firebase.analytics();
 export const db = firebaseApp.firestore();

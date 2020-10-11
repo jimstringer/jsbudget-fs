@@ -1,4 +1,3 @@
-
 // add useContext
 import React, {useContext} from 'react';
 import {firebaseAuth} from '../provider/AuthProvider'
@@ -21,12 +20,12 @@ const Signin = () => {
   }
 
   return (
-    <div className="App container">
-      <h1 className="">Signin</h1>
+    <div className="App signin">
+      <h1 className="">Sign In</h1>
       <form className="" onSubmit={handleSubmit}>
         <input type="email" onChange={handleChange} name="email" placeholder='email' value={inputs.email} />
         <input type="password" onChange={handleChange} name="password" placeholder='password' value={inputs.password} />
-        <button>signin</button>
+        <button className="button green">signin</button>
         {errors.length > 0 ? errors.map(error => <p style={{color: 'red'}}>{error}</p> ) : null}
       </form>
     </div>

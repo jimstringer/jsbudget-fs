@@ -7,6 +7,112 @@
   background-color: white;
 }
 
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit; /* 1 */
+  font-size: 100%; /* 1 */
+  line-height: 1.15; /* 1 */
+  margin: 0; /* 2 */
+}
+
+/**
+ * Show the overflow in IE.
+ * 1. Show the overflow in Edge.
+ */
+
+button,
+input { /* 1 */
+  overflow: visible;
+}
+
+/**
+ * Remove the inheritance of text transform in Edge, Firefox, and IE.
+ * 1. Remove the inheritance of text transform in Firefox.
+ */
+
+button,
+select { /* 1 */
+  text-transform: none;
+}
+
+/**
+ * Correct the inability to style clickable types in iOS and Safari.
+ */
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: button;
+}
+
+.button {
+  margin: auto;
+  position: relative;
+  display: block;
+  width: 200px;
+  height: 36px;
+  border-radius: 18px;
+  background-color: #1c89ff;
+  border: solid 1px transparent;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 300;
+  cursor: pointer;
+  transition: all .1s ease-in-out;
+  &:hover {
+    background-color: transparent;
+    border-color: #fff;
+    transition: all .1s ease-in-out;
+  }
+
+}
+
+button.green {
+    background: #47cf73;
+    color: #000;
+}
+
+button.red {
+    background: #D90505;
+    color: #FFF;
+}
+
+.heading {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.signin {
+  margin: auto;
+  width: 90%;
+}
+
+.add-transaction {
+  margin: auto;
+  width: 90%;
+}
+
+@media only screen and (min-width: 800px) {
+  .signin {
+    width: 20%;
+  }
+  .add-transaction {
+    width: 20%;
+  }
+}
+
+.grid-main {
+  grid-template-areas:   "header header"
+                        "content sidebar"
+                        "footer footer";
+  grid-template-rows:    150px 1fr 100px;
+  grid-template-columns: 1fr 200px;
+}
+
 input[type=text], input[type=date], input[type=email], input[type=password], input[type=number], select {
   -webkit-appearance: none; -moz-appearance: none;
   display: block;
