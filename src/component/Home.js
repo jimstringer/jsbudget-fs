@@ -1,7 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {firebaseAuth} from '../provider/AuthProvider'
 import {db} from '../firebase/firebaseIndex'
-import Transaction from './Transaction.js'
 
 /**
  * Returns todays date as string in format YYYY-MM-DD
@@ -74,11 +73,21 @@ const Home = (props) => {
   const handleAddTransaction = (e) => {
     //sendTransaction({ Comment: expenseText, TrxDate: expenseDate,CatId: Number(expenseCat) , Amount: Number(expenseAmount) });
     console.log({ Comment: expenseText, TrxDate: expenseDate,CatId: expenseCat , Amount: Number(expenseAmount) })
-    // Add a new document in collection "cities"
+    //it seems that new Date(YYYY-MM-DD) creates a UTC timestamp at 00:00:00 so 2020-10-22 is 2020-10-21 19:00:00 GMT-5
+    //What I want is the date string I put in for current timezone, but still have firestore index by date
+    //firestore stores a UTC timestamp
+    //These both give the same datetime
+    //const utcdate = new Date (Date.UTC(expenseDate.slice(0,4),parseInt(expenseDate.slice(5,7))-1,parseInt(expenseDate.slice(8,10))))
+    //console.log(utcdate.toUTCString())
+    //console.log(new Date(expenseDate))
+    //need to add time so it will be created as localtime
+    //console.log(new Date(expenseDate+"T00:00:00"))
+    //
     //db.collection("transactions").doc().set({
+    //
     db.collection("transactions").add({
       Comment: expenseText,
-      TrxDate: new Date(expenseDate),
+      TrxDate: new Date(expenseDate+"T00:00:00"),
       Category: expenseCat ,
       Amount: Number(expenseAmount),
       Income: false,
@@ -91,6 +100,7 @@ const Home = (props) => {
     .catch(function(error) {
         console.error("Error writing document: ", error);
     });
+    //
     setExpenseAmount(0);
     setExpenseText("");
     setLoading(!loading)
@@ -151,7 +161,7 @@ const Home = (props) => {
           <ul className="transaction-list">
             {trxItems.length === 0 ? <ul>Loading</ul> : trxItems.map(
               Taction => <li key={Taction.id}><span>{
-                Taction.TrxDate.toDate().getFullYear()+"-"+ Taction.TrxDate.toDate().getMonth() +"-"+Taction.TrxDate.toDate().getDate()
+                Taction.TrxDate.toDate().toDateString()
               }</span><span>{Taction.Category}</span><span>{Taction.Amount}</span></li>
             )}
           </ul>
