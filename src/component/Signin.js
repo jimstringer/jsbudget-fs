@@ -4,7 +4,8 @@ import {firebaseAuth} from '../provider/AuthProvider'
 
 const Signin = () => {
 
-
+  const version = process.env.REACT_APP_VERSION
+  console.log(version)
   const {handleSignin, inputs, setInputs, errors} = useContext(firebaseAuth)
   
   const handleSubmit = (e) => {
@@ -28,6 +29,7 @@ const Signin = () => {
         <button className="button green">signin</button>
         {errors.length > 0 ? errors.map(error => <p style={{color: 'red'}}>{error}</p> ) : null}
       </form>
+      <h4>version:{version}</h4>
     </div>
   );
 };
