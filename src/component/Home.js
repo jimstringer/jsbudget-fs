@@ -33,9 +33,9 @@ const Home = (props) => {
   const [expenseText, setExpenseText] = useState("");
   const [expenseDate, setExpenseDate] = useState(getTodaysDateString);
   const [expenseAmount, setExpenseAmount] = useState(0);
-  const [expenseCat, setExpenseCat] = useState("Alcohol");
+  const [expenseCat, setExpenseCat] = useState("Empty");
 
-  const catitems = ["Alcohol","Auto Gas","Auto Maint","Boat","Camping","Clothing","Dine Out","Exercise","Fishing","Grandkids" ,"Grocery","House","Lotto","Misc","Prescription"];
+  const catitems = ["Empty","Alcohol","Autopac","Auto Gas","Auto License","Auto Maint","Boat","Camping","Clothing","Dine Out","Exercise","Fishing","Grandkids" ,"Grocery","Holiday","House","Lotto","Misc","Prescription"];
 
   const handleExpenseTextChange = (e) => {
     setExpenseText(e.target.value);
@@ -77,17 +77,20 @@ const Home = (props) => {
     //What I want is the date string I put in for current timezone, but still have firestore index by date
     //firestore stores a UTC timestamp
     //These both give the same datetime
-    //const utcdate = new Date (Date.UTC(expenseDate.slice(0,4),parseInt(expenseDate.slice(5,7))-1,parseInt(expenseDate.slice(8,10))))
+    const utcdate = new Date (Date.UTC(expenseDate.slice(0,4),parseInt(expenseDate.slice(5,7))-1,parseInt(expenseDate.slice(8,10))))
     //console.log(utcdate.toUTCString())
     //console.log(new Date(expenseDate))
     //need to add time so it will be created as localtime
     //console.log(new Date(expenseDate+"T00:00:00"))
-    //
-    //db.collection("transactions").doc().set({
-    //
+    //With time works on the desktop browser but not on the iphone.
+    //New Plan, store TrxDate as UTC using Date.UTC 
+    //add a string field StrDate that stores 2020-10-24
+    //query using UTC 
     db.collection("transactions").add({
       Comment: expenseText,
-      TrxDate: new Date(expenseDate+"T00:00:00"),
+      //TrxDate: new Date(expenseDate+"T00:00:00"),
+      TrxDate:utcdate,
+      StrDate: expenseDate,
       Category: expenseCat ,
       Amount: Number(expenseAmount),
       Income: false,
@@ -103,6 +106,7 @@ const Home = (props) => {
     //
     setExpenseAmount(0);
     setExpenseText("");
+    setExpenseCat("Empty")
     setLoading(!loading)
   };
 
@@ -150,7 +154,7 @@ const Home = (props) => {
           onChange={handleExpenseTextChange}
         />
         <button className="button green" type="submit"
-          disabled={!expenseText || !expenseAmount || !expenseDate}
+          disabled={!expenseText || !expenseAmount || !expenseDate || expenseCat === 'Empty'}
           onClick={handleAddTransaction}
         >
           submit
