@@ -34,8 +34,8 @@ const Home = (props) => {
   const [expenseDate, setExpenseDate] = useState(getTodaysDateString);
   const [expenseAmount, setExpenseAmount] = useState(0);
   const [expenseCat, setExpenseCat] = useState("Empty");
-
-  const catitems = ["Empty","Alcohol","Autopac","Auto Gas","Auto License","Auto Maint","Boat","Camping","Clothing","Dine Out","Exercise","Fishing","Grandkids" ,"Grocery","Holiday","House","Lotto","Misc","Prescription"];
+  const [catitems, setCatitems] = useState([]);
+  //const catitems = ["Alcohol","Autopac","Auto Gas","Auto License","Auto Maint","Boat","Camping","Clothing","Dine Out","Exercise","Fishing","Grandkids" ,"Grocery","Holiday","House","Lotto","Misc","Prescription"];
 
   const handleExpenseTextChange = (e) => {
     setExpenseText(e.target.value);
@@ -50,6 +50,21 @@ const Home = (props) => {
     setExpenseCat(e.target.value);
   };
   
+  useEffect(()=>{
+    const catRef = db.collection('category').doc('categorys');
+    catRef.get()
+      .then((cat)=>{
+        if (!cat.exists){
+          console.log('No matching documents.');
+        } else {
+          const cats = cat.data()
+          console.log("Cat:",cats.catlist);
+          setCatitems(cats.catlist);
+        }
+
+      })
+  },[]);
+
   useEffect(()=>{
     var startfulldate = new Date();
     const trxRef = db.collection('transactions');
@@ -84,7 +99,7 @@ const Home = (props) => {
     //console.log(new Date(expenseDate+"T00:00:00"))
     //With time works on the desktop browser but not on the iphone.
     //New Plan, store TrxDate as UTC using Date.UTC 
-    //add a string field StrDate that stores 2020-10-24
+    //add a string field StrDate that stores 2020-10-24 NOT NEEDED
     //query using UTC 
     db.collection("transactions").add({
       Comment: expenseText,
@@ -122,6 +137,7 @@ const Home = (props) => {
           value={expenseCat}
           onChange={handleExpenseCatChange}
         >
+          <option key="Empty" value="Empty">Empty</option>
           {catitems.map(( value ) => (
             <option key={value} value={value}>
               {value}
@@ -165,7 +181,8 @@ const Home = (props) => {
           <ul className="transaction-list">
             {trxItems.length === 0 ? <ul>Loading</ul> : trxItems.map(
               Taction => <li key={Taction.id}><span>{
-                Taction.TrxDate.toDate().toDateString()
+                //TrxDate is a firestore timestamp object with a toDate method
+                Taction.TrxDate.toDate().toUTCString().slice(0,16)
               }</span><span>{Taction.Category}</span><span>{Taction.Amount}</span></li>
             )}
           </ul>
