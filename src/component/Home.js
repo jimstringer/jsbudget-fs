@@ -59,7 +59,7 @@ const Home = (props) => {
         } else {
           const cats = cat.data()
           console.log("Cat:",cats.catlist);
-          setCatitems(cats.catlist);
+          setCatitems(cats.catlist.sort());
         }
 
       })

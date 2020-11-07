@@ -3,6 +3,7 @@ import 'firebase/auth'
 
 export const authMethods = {
   // firebase helper methods go here... 
+  /*
   signup: (email, password, setErrors,setToken ) => {
     firebaseApp.auth().createUserWithEmailAndPassword(email,password) 
       //make res asynchonous so that we can make grab the token before saving it.
@@ -18,6 +19,7 @@ export const authMethods = {
         setErrors(prev => ([...prev, err.message]))
       })
   },
+  */
   signin: (email, password, setErrors, setToken) => {
     //change from create users to...
     firebaseApp.auth().signInWithEmailAndPassword(email, password) 
