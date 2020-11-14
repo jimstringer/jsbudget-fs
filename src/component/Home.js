@@ -29,7 +29,7 @@ const Home = (props) => {
 
   const {handleSignout,} = useContext(firebaseAuth)
   const [loading, setLoading] = useState(true);
-  const [trxItems, setTrxItems] = useState([]);
+  const [trxItems, setTrxItems] = useState({});
   const [expenseText, setExpenseText] = useState("");
   const [expenseDate, setExpenseDate] = useState(getTodaysDateString);
   const [expenseAmount, setExpenseAmount] = useState(0);
@@ -67,19 +67,38 @@ const Home = (props) => {
 
   useEffect(()=>{
     var startfulldate = new Date();
+    var date = new Date();
+    var firstDayThisMonth = new Date(Date.UTC(date.getFullYear(), date.getMonth(), 1));
     const trxRef = db.collection('transactions');
-    trxRef.where('TrxDate', '<=', startfulldate)
-      .orderBy('TrxDate','desc').limit(5)
+    trxRef.where('TrxDate', '>=', firstDayThisMonth)
+      //.orderBy('TrxDate','desc').limit(5)
+      .orderBy('TrxDate','desc')
       .get()
      .then((querySnapshot) => {
         if (querySnapshot.empty) {
           console.log('No matching documents.');
           return;
         }
+        /*
         const data = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
+        */
+        //if we want to calculate totals can't use map
+        const data = {'Monthly Total': 0}
+        querySnapshot.forEach(doc => {
+          const obj = doc.data()
+          data['Monthly Total'] += obj.Amount
+          if (obj.Category in data) {
+            data[obj.Category] += Number(obj.Amount)
+          }
+          else {
+            //you need to assign 0 to the key of you get NaN adding undefined to Amount
+            data[obj.Category] = 0
+            data[obj.Category] += Number(obj.Amount)
+          }
+        });
         setTrxItems(data)
         console.log("Transactions: ", data);
     })
@@ -125,6 +144,11 @@ const Home = (props) => {
     setLoading(!loading)
   };
 
+  /***
+   * I want to show the current month totals per category instead of the last 5 expenses.
+   * The timestamp stored in firestore is UTC timestamp so I need the UTC timestamp for midnight first day of month.
+   *
+   ****/
 
   return (
     <div className="App">
@@ -177,13 +201,10 @@ const Home = (props) => {
         </button>
       </div>
       <div className="transactions">
-        <h1>Last 5 Transactions</h1>
+        <h1>Month Totals</h1>
           <ul className="transaction-list">
-            {trxItems.length === 0 ? <ul>Loading</ul> : trxItems.map(
-              Taction => <li key={Taction.id}><span>{
-                //TrxDate is a firestore timestamp object with a toDate method
-                Taction.TrxDate.toDate().toUTCString().slice(0,16)
-              }</span><span>{Taction.Category}</span><span>{Taction.Amount}</span></li>
+            {Object.keys(trxItems).length === 0 ? <ul>Loading</ul> : Object.keys(trxItems).map(
+              key => <li key={key}><span>{key}</span><span>${trxItems[key].toFixed(2)}</span></li>
             )}
           </ul>
 

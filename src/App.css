@@ -106,11 +106,29 @@ button.red {
   width: 90%;
 }
 
+.transactions {
+  margin: auto;
+  width: 90%;
+}
+
+ul.transaction-list {
+  text-align: left;
+  list-style-type: none;
+}
+
+ul.transaction-list span {
+  display: inline-block;
+  width: 45%
+}
+
 @media only screen and (min-width: 800px) {
   .signin {
     width: 20%;
   }
   .add-transaction {
+    width: 20%;
+  }
+  .transactions {
     width: 20%;
   }
 }
